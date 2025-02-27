@@ -7,10 +7,14 @@ resource "aws_s3_bucket" "frontend" {
   bucket = "my-ecart-frontend"
 }
 
-# S3 ACL resource (replaces deprecated acl argument)
-resource "aws_s3_bucket_acl" "frontend_acl" {
+# Disable public access blocking (if needed for hosting)
+resource "aws_s3_bucket_public_access_block" "frontend" {
   bucket = aws_s3_bucket.frontend.id
-  acl    = "public-read"
+
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
 }
 
 # CloudFront distribution
