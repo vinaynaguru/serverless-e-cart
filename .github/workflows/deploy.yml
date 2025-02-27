@@ -10,12 +10,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: List Repository Files (Debugging)
+        run: ls -R
+
+      - name: List Terraform Files (Debugging)
+        run: ls -l terraform
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
 
       - name: Terraform Init & Apply
+        working-directory: terraform
         run: |
-          cd terraform
           terraform init
           terraform apply -auto-approve
 
