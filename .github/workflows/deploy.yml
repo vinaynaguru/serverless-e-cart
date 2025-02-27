@@ -1,0 +1,26 @@
+name: Deploy to AWS
+
+on:
+  workflow_dispatch:  # Manually trigger the workflow
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init & Apply
+        run: |
+          terraform init
+          terraform apply -auto-approve
+        working-directory: terraform  # Ensure Terraform runs in the correct directory
+
+      - name: Package & Deploy Lambda
+        run: |
+          zip lambda.zip lambda_function.py
+          aws s3 cp lambda.zip s3://my-ecart-backend/
+          aws lambda update-function-code --function-name ecart-api --s3-bucket my-ecart-backend --s3-key lambda.zip
