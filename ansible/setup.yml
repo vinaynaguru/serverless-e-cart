@@ -1,0 +1,7 @@
+- name: Install Terraform & AWS CLI
+  hosts: localhost
+  tasks:
+    - name: Install Terraform
+      shell: |
+        sudo apt update
+        sudo apt install -y terraform awscli
